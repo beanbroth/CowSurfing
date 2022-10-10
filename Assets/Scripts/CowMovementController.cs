@@ -10,25 +10,20 @@ using UnityEngine.InputSystem;
 
 public class CowMovementController : MonoBehaviour
 {
-    Vector2 _startScale;
-    Vector2 _vel;
-
+    [SerializeField] SpringToTarget2D _posSpring;
+    [SerializeField] KeyCode[] _keys;
+    [SerializeField] Transform[] _movePoints;
     [SerializeField] Transform _cowBody;
 
     [SerializeField] float _maxVel;
     [SerializeField] int _maxLaneMove;
 
-    [SerializeField] SpringToTarget2D _posSpring;
-
-
-    [SerializeField] KeyCode[] _keys;
-
-    [SerializeField] Transform[] _movePoints;
+    Vector2 _startScale;
+    Vector2 _vel;
 
 
 
     Vector2 _lastPos;
-
     int _currentLane;
 
 
@@ -37,6 +32,7 @@ public class CowMovementController : MonoBehaviour
         _lastPos = transform.position;
         _startScale = transform.localScale;
         MoveToLane(2);
+        GameManager.OnGameStateChanged += OnGameManagerStateChanged;
     }
 
     // Update is called once per frame
@@ -49,13 +45,21 @@ public class CowMovementController : MonoBehaviour
                 MoveToLane(i);
             }
         }
+    }
+
+    void OnGameManagerStateChanged(GameManager.GameState nextState)
+    {
+        if (nextState == GameManager.GameState.TrickScreen)
+        {
+            //Debug.Log("Disabling movement");
+            this.enabled = false;
+        }
 
 
     }
 
     private void MoveToLane(int laneIndex)
     {
-        Debug.Log("moving");
         _currentLane = laneIndex;
         _posSpring.SpringTo(_movePoints[_currentLane].position);
     }
