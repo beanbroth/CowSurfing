@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
+    [SerializeField] GameState _startingGameState;
+
     private static GameManager _instance;
     private GameState _state;
     private bool _shouldUpdateState;
@@ -32,6 +35,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         MakeSingleton();
+        SetNextGameState(GameState.PlayingGame);
+        SetNextGameState(_startingGameState);
     }
 
 

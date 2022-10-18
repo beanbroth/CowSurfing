@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DebrisSpawnerController : MonoBehaviour
 {
+
+    [SerializeField] GameObject _debrisContainer;
     [SerializeField] Transform[] _lanes;
 
     [SerializeField] GameObject _debrisPrefab;
@@ -22,7 +24,22 @@ public class DebrisSpawnerController : MonoBehaviour
     {
         spawnTime = Random.Range(minTime, maxTime);
         time = 0;
+        GameManager.OnGameStateChanged += OnGameManagerStateChanged;
     }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= OnGameManagerStateChanged;
+    }
+
+    void OnGameManagerStateChanged(GameManager.GameState nextState)
+    {
+        if (nextState == GameManager.GameState.TrickScreen)
+        {
+            _debrisContainer.SetActive(false);
+        }
+    }
+
 
     void Update()
     {
@@ -40,6 +57,6 @@ public class DebrisSpawnerController : MonoBehaviour
     void SpawnObject()
     {
         time = 0;
-        Instantiate(_debrisPrefab, (Vector2)_lanes[Random.Range(0, 5)].position + _spawnOffset, Quaternion.identity, transform);
+        Instantiate(_debrisPrefab, (Vector2)_lanes[Random.Range(0, 5)].position + _spawnOffset, Quaternion.identity, _debrisContainer.transform);
     }
 }
