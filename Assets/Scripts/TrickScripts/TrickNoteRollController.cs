@@ -2,6 +2,7 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -28,7 +29,6 @@ public class TrickNoteRollController : MonoBehaviour
     [SerializeField] float _bpm;
 
     [SerializeField] KeyCode[] _keys;
-    [SerializeField] Transform[] noteLanes;
 
     TrickDataContainer _currentTrickDataContainer;
     int _currentTrickStep;
@@ -41,8 +41,13 @@ public class TrickNoteRollController : MonoBehaviour
     {
 
         NoteHitZoneController.OnNoteHit += NoteHit;
+        GameManager.OnGameStateChanged += OnGameManagerStateChanged;
 
-        StartTrick();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= OnGameManagerStateChanged;
     }
 
     private void StartTrick()
@@ -80,17 +85,41 @@ public class TrickNoteRollController : MonoBehaviour
             Destroy(allNotes[_currentTrickStep]);
             _currentTrickDataContainer.animationClip.SampleAnimation(_cowBody, _currentTrickDataContainer.Steps[_currentTrickStep].clipFrame / _currentTrickDataContainer.animationClip.frameRate);
 
+
             _currentTrickStep++;
-
-
+            if (_currentTrickStep > _currentTrickDataContainer.Steps.Length - 1)
+            {
+                Debug.Log("hit all the notes good job!!!");
+                GameManager.Instance.SetNextGameState(GameManager.GameState.PlayingGame);
+            }
         }
         else
         {
+            for (int i = 0; i < _notePrefabs.Length; i++)
+            {
+                Destroy(allNotes[i]);
+            }
+            GameManager.Instance.SetNextGameState(GameManager.GameState.PlayingGame);
             Debug.Log("Hit the incorrect key FAILURE FAUILURE EEB EBBE EBB");
         }
-
     }
+    void OnGameManagerStateChanged(GameManager.GameState nextState)
+    {
+        if (nextState == GameManager.GameState.TrickScreen)
+        {
+            StartTrick();
+        }
 
+        if (nextState == GameManager.GameState.PlayingGame)
+        {
+            
+            foreach (GameObject note in allNotes)
+            {
+                Destroy(note);
+            }
+            allNotes.Clear();
+        }
+    }
     void Update()
     {
         transform.position += Vector3.left * _noteGap * _bpm / 60 * Time.deltaTime;

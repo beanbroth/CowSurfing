@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc4bf3e73a947c43b3c9ac2aa8b1c3e, type: 3}
   m_Name: Trick1
   m_EditorClassIdentifier: 
-  animationClip: {fileID: 0}
+  animationClip: {fileID: 7400000, guid: 1619673fad58186499d8ca2f18cc8003, type: 2}
   steps:
   - startTimeUnit: 0
     key: 0
     clipFrame: 0
   - startTimeUnit: 1
-    key: 0
+    key: 1
     clipFrame: 1
   - startTimeUnit: 2
     key: 0
-    clipFrame: 2
+    clipFrame: 0
   - startTimeUnit: 3
     key: 0
-    clipFrame: 3
+    clipFrame: 1
   - startTimeUnit: 4
     key: 0
-    clipFrame: 3
+    clipFrame: 0
   - startTimeUnit: 5
     key: 0
-    clipFrame: 3
+    clipFrame: 1

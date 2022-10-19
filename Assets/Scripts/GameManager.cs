@@ -36,9 +36,8 @@ public class GameManager : MonoBehaviour
     {
         MakeSingleton();
         SetNextGameState(GameState.PlayingGame);
-        SetNextGameState(_startingGameState);
+       // SetNextGameState(_startingGameState);
     }
-
 
     private void FixedUpdate()
     {

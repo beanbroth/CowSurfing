@@ -1,11 +1,11 @@
-using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamSwitchController : MonoBehaviour
+public class TrickMinigameController : MonoBehaviour
 {
-    [SerializeField] CinemachineVirtualCamera _stuntCam;
+    [SerializeField] Transform _cow;
+    [SerializeField] GameObject _cowOffset;
     void Start()
     {
         GameManager.OnGameStateChanged += OnGameManagerStateChanged;
@@ -15,16 +15,23 @@ public class CamSwitchController : MonoBehaviour
     {
         GameManager.OnGameStateChanged -= OnGameManagerStateChanged;
     }
+
+    void Update()
+    {
+        transform.position = _cow.transform.position;
+    }
+
     void OnGameManagerStateChanged(GameManager.GameState nextState)
     {
         if (nextState == GameManager.GameState.TrickScreen)
         {
-            _stuntCam.Priority = 20;
+            _cowOffset.SetActive(true);
         }
 
         if (nextState == GameManager.GameState.PlayingGame)
         {
-            _stuntCam.Priority = -20;
+            _cowOffset.SetActive(false);
         }
     }
+
 }

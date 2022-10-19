@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DebrisSpawnerController : MonoBehaviour
@@ -9,6 +10,7 @@ public class DebrisSpawnerController : MonoBehaviour
     [SerializeField] Transform[] _lanes;
 
     [SerializeField] GameObject _debrisPrefab;
+    [SerializeField] List<GameObject> _allDebris = new List<GameObject>();
 
     [SerializeField] float maxTime = 5;
     [SerializeField] float minTime = 2;
@@ -36,7 +38,20 @@ public class DebrisSpawnerController : MonoBehaviour
     {
         if (nextState == GameManager.GameState.TrickScreen)
         {
+            foreach (GameObject debris in _allDebris)
+            {
+                Destroy(debris);
+            }
+            _allDebris.Clear();
             _debrisContainer.SetActive(false);
+            enabled = false;
+
+        }
+
+        if (nextState == GameManager.GameState.PlayingGame)
+        {
+            _debrisContainer.SetActive(true);
+            enabled = true;
         }
     }
 
@@ -57,6 +72,6 @@ public class DebrisSpawnerController : MonoBehaviour
     void SpawnObject()
     {
         time = 0;
-        Instantiate(_debrisPrefab, (Vector2)_lanes[Random.Range(0, 5)].position + _spawnOffset, Quaternion.identity, _debrisContainer.transform);
+        _allDebris.Add(Instantiate(_debrisPrefab, (Vector2)_lanes[Random.Range(0, 5)].position + _spawnOffset, Quaternion.identity, _debrisContainer.transform));
     }
 }

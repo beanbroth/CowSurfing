@@ -57,8 +57,6 @@ public class CowMovementController : MonoBehaviour
         {
             MoveToLane(_currentLane + 1);
         }
-
-
     }
 
     void OnGameManagerStateChanged(GameManager.GameState nextState)
@@ -72,9 +70,16 @@ public class CowMovementController : MonoBehaviour
 
             enabled = false;
         }
+
+        if (nextState == GameManager.GameState.PlayingGame)
+        {
+            _posSpring.enabled = true;
+            _cowBody.transform.localScale = Vector3.one;
+
+            enabled = true;
+            MoveToLane(2);
+        }
     }
-
-
 
     private void MoveToLane(int laneIndex)
     {

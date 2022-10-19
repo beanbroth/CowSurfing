@@ -16,7 +16,12 @@ public class CowCowTrickController : MonoBehaviour
 
     void Start()
     {
-        
+        GameManager.OnGameStateChanged += OnGameManagerStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= OnGameManagerStateChanged;
     }
 
     // Update is called once per frame
@@ -25,18 +30,36 @@ public class CowCowTrickController : MonoBehaviour
         if (!_isTricking)
             return;
 
-        transform.position += new Vector3(0, _vel) * Time.deltaTime;
-        _vel += Physics2D.gravity.y * Time.deltaTime;
+        if (_vel >= 0f)
+        {
+            transform.position += new Vector3(0f, _vel) * Time.deltaTime;
+            _vel += Physics2D.gravity.y * Time.deltaTime;
+        }
+       
     }
 
+    void OnGameManagerStateChanged(GameManager.GameState nextState)
+    {
+        if (nextState == GameManager.GameState.TrickScreen)
+        {
+            StartTricking();
+        }
 
+        if (nextState == GameManager.GameState.PlayingGame)
+        {
+            _isTricking = false;
+            _vel = 0;
+            _col.enabled = true;
+            
+        }
+    }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("crash!!");
         GameManager.Instance.SetNextGameState(GameManager.GameState.TrickScreen);
-        StartTricking();
+        
     }
 
     private void StartTricking()

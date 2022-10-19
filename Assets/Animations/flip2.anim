@@ -8,7 +8,7 @@ AnimationClip:
   m_PrefabAsset: {fileID: 0}
   m_Name: flip2
   serializedVersion: 6
-  m_Legacy: 0
+  m_Legacy: 1
   m_Compressed: 0
   m_UseHighQualityCurve: 1
   m_RotationCurves: []
@@ -17,7 +17,18 @@ AnimationClip:
   m_PositionCurves: []
   m_ScaleCurves: []
   m_FloatCurves: []
-  m_PPtrCurves: []
+  m_PPtrCurves:
+  - curve:
+    - time: 0
+      value: {fileID: 21300000, guid: aaadff6e279aa7245b1f83f26fcaf7ae, type: 3}
+    - time: 0.016666668
+      value: {fileID: 21300000, guid: aaadff6e279aa7245b1f83f26fcaf7ae, type: 3}
+    - time: 0.033333335
+      value: {fileID: 21300000, guid: aaadff6e279aa7245b1f83f26fcaf7ae, type: 3}
+    attribute: m_Sprite
+    path: cowgame_0003_Layer-7
+    classID: 212
+    script: {fileID: 0}
   m_SampleRate: 60
   m_WrapMode: 0
   m_Bounds:
@@ -31,7 +42,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1
+    m_StopTime: 0.050000004
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
